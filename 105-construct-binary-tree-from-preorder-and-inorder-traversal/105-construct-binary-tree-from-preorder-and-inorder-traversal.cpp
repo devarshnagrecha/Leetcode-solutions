@@ -11,8 +11,18 @@
  */
 class Solution {
 public:
+    
+    unordered_map <int,int> mp;
+    
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) 
     {
+        int n = inorder.size()-1;
+        
+        for (int i=0; i<=n; i++)
+        {
+            mp[inorder[i]]=i;
+        }
+        
         int rootIdx = 0;
         return build(preorder, inorder, rootIdx, 0, inorder.size()-1);
     }
@@ -22,10 +32,7 @@ public:
         if (left > right) 
             return NULL;
         
-        int pivot = left;  // find the root from inorder
-        
-        while(inorder[pivot] != preorder[rootIdx]) 
-            pivot++;
+        int pivot = mp[preorder[rootIdx]];
         
         rootIdx++;
         
