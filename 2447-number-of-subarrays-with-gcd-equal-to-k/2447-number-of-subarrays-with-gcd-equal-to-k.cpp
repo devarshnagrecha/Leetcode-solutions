@@ -11,6 +11,9 @@ public:
             {
                 temp = __gcd(temp, nums[j]);
                 
+                if (temp<k || temp%k!=0)
+                    break;
+                
                 if (temp==k)
                     ans++;
             }
