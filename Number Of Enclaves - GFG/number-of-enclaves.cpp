@@ -10,20 +10,23 @@ using namespace std;
 
 class Solution {
   public:
-  
-    bool isValid (int i, int j, vector<vector<int>> &grid, int n, int m)
+    
+    void dfs (int i, int j, int n, int m, vector<vector<int>> &grid)
     {
         if (i<0 || j<0 || i>=n || j>=m || grid[i][j]==0)
-            return false;
+            return;
         grid[i][j]=0;
-        return true;
+        
+        dfs(i+1,j,n,m,grid);
+        dfs(i,j+1,n,m,grid);
+        dfs(i-1,j,n,m,grid);
+        dfs(i,j-1,n,m,grid);
     }
+    
     
     int numberOfEnclaves(vector<vector<int>> &grid) 
     {
         int n = grid.size(), m = grid[0].size(), ans = 0;
-        
-        queue <pair<int,int>> q;
         
         for (int i=0; i<n; i++)
         {
@@ -33,30 +36,11 @@ class Solution {
                 {
                     if (grid[i][j]==1)
                     {
-                        q.push({i,j});
-                        grid[i][j]=0;
+                        dfs(i,j,n,m,grid);
                     }
                     
                 }
             }
-        }
-        
-        while(!q.empty())
-        {
-            auto it = q.front();
-            q.pop();
-            
-            int i = it.first;
-            int j = it.second;
-            
-            if (isValid(i+1,j,grid,n,m))
-                q.push({i+1,j});
-            if (isValid(i,j+1,grid,n,m))
-                q.push({i,j+1});
-            if (isValid(i-1,j,grid,n,m))
-                q.push({i-1,j});
-            if (isValid(i,j-1,grid,n,m))
-                q.push({i,j-1});
         }
         
         for (int i=1; i<n; i++)
