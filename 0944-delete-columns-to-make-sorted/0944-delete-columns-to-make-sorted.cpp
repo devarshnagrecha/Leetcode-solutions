@@ -8,14 +8,15 @@ public:
         
         for (int i=0; i<c; i++)
         {
-            string s = "";
-            for (int j=0; j<r; j++)
+            for (int j=1; j<r; j++)
             {
-                s += strs[j][i];
+                if (strs[j][i]<strs[j-1][i])
+                {
+                    ans++;
+                    break;
+                }
+                    
             }
-            
-            if (!is_sorted(s.begin(),s.end()))
-                ans++;
         }
         
         return ans;
