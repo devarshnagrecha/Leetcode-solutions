@@ -8,64 +8,40 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
-  
-    void dfs (int u, vector<bool>&vis, stack <int> &st,vector <pair<int,int>> adj[])
-    {
-        vis[u]=true;
-        
-        for (auto it:adj[u])
-        {
-            if (!vis[it.first])
-            {
-                dfs(it.first,vis,st,adj);
-            }
-        }
-        
-        st.push(u);
-    }
-    
     vector<int> shortestPath(int n,int m, vector<vector<int>>& edges)
     {
-        vector <pair<int,int>> adj[n];
-         
-        for (auto it:edges)
+        vector<pair<int,int>>adj[n];
+        for (int i=0; i<m; i++)
         {
-            adj[it[0]].push_back({it[1],it[2]});
+            adj[edges[i][0]].push_back({edges[i][1], edges[i][2]});
         }
-         
-        vector<bool> vis(n,false);
-        stack <int> st;
-         
-        for (int i=0; i<n; i++)
-        {
-            if (!vis[i])
-            {
-                dfs (i,vis,st,adj);
-            }
-        }
-        
-        vector <int> dis(n,1e9);
+        vector<int>dis(n,INT_MAX);
+        queue<pair<int,int>>q;
+        q.push({0,0});
         dis[0]=0;
-        
-        while(!st.empty())
+        while(!q.empty())
         {
-            int u = st.top();
-            st.pop();
+            auto it = q.front();
+            q.pop();
             
-            for (auto it:adj[u])
+            int node = it.first, cost = it.second;
+            for (auto next:adj[node])
             {
-                if (dis[it.first]>dis[u]+it.second)
+                if (cost + next.second < dis[next.first])
                 {
-                    dis[it.first]=dis[u]+it.second;
+                    dis[next.first] = next.second+cost;
+                    q.push({next.first, cost + next.second});
                 }
             }
         }
         
         for (auto &it:dis)
-            if (it==1e9)
+        {
+            if (it==INT_MAX)
                 it=-1;
+        }
         return dis;
-        
+         
         // code here
     }
 };
