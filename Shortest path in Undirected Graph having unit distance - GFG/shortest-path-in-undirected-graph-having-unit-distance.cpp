@@ -10,38 +10,43 @@ class Solution {
   public:
     vector<int> shortestPath(vector<vector<int>>& edges, int n,int m, int src)
     {
-        vector <int> dis(n,1e9);
-        vector <int> adj[n];
-        
-        for (auto it:edges)
+        vector<int>adj[n];
+        for (int i=0; i<m; i++)
         {
-            adj[it[0]].push_back(it[1]);
-            adj[it[1]].push_back(it[0]);
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
         }
         
-        queue<int> q;
+        queue<int>q;
+        //vector<int>vis(n,0);
+        vector<int>dis(n,INT_MAX);
         dis[src]=0;
         q.push(src);
-        
+        int curr = 1;
         while(!q.empty())
         {
-            int node = q.front();
-            q.pop();
-            
-            for (auto ct:adj[node])
+            int size = q.size();
+            while(size--)
             {
-                if (dis[ct]>dis[node]+1)
+                int x = q.front();
+                q.pop();
+                
+                for (auto it:adj[x])
                 {
-                    dis[ct]=dis[node]+1;
-                    q.push(ct);
+                    if (dis[it]>curr)
+                    {
+                        q.push(it);
+                        dis[it]=curr;
+                    }
                 }
             }
-            
+            curr++;
         }
-        
         for (auto &it:dis)
-            if(it==1e9)
-                it=-1;
+        {
+            if (it==INT_MAX)
+                it = -1;
+        }
         return dis;
         // code here
     }
