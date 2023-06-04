@@ -11,21 +11,21 @@ class Solution
     vector <int> dijkstra(int n, vector<vector<int>> adj[], int s)
     {
         vector<int>dis(n,INT_MAX);
-        queue<vector<int>>q;
-        q.push({s,0});
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>> >q;
+        q.push({0,s});
         dis[s]=0;
         while(!q.empty())
         {
-            auto it = q.front();
+            auto it = q.top();
             q.pop();
             
-            int node = it[0], cost = it[1];
+            int node = it[1], cost = it[0];
             for (auto next:adj[node])
             {
                 if (cost + next[1] < dis[next[0]])
                 {
                     dis[next[0]] = next[1]+cost;
-                    q.push({next[0], cost + next[1]});
+                    q.push({cost + next[1],next[0]});
                 }
             }
         }
