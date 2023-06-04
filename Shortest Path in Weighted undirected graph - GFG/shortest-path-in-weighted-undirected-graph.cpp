@@ -27,6 +27,9 @@ class Solution {
             int curr = it.second;
             int cost = it.first;
             
+            if (dis[curr]<cost)
+                continue;
+                
             for (auto ct:adj[curr])
             {
                 int next = ct.first;
