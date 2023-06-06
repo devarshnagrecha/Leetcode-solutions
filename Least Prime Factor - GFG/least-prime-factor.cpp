@@ -9,22 +9,23 @@ class Solution {
   public:
     vector<int> leastPrimeFactor(int n) 
     {
-        vector<int>ans;
-        ans.push_back(0);
-        ans.push_back(1);
+        vector<int>firstPrime(n+1,0);
+        firstPrime[1]=1;
         
         for (int i=2; i<=n; i++)
         {
-            for (int j=2; j<=i; j++)
+            if (firstPrime[i]==0)
             {
-                if (i%j==0)
+                firstPrime[i]=i;
+                
+                for (int j=i*i; j<=n; j+=i)
                 {
-                    ans.push_back(j);
-                    break;
+                    if (firstPrime[j]==0)
+                        firstPrime[j]=i;
                 }
             }
         }
-        return ans;
+        return firstPrime;
         // code here
     }
 };
